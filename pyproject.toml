@@ -1,0 +1,15 @@
+[tool.poetry]
+name = "nicenumber"
+version = "0.1.0"
+description = "Python package to make numbers nice"
+authors = ["Cameron Harris <camharris22@gmail.com>"]
+license = "MIT"
+
+[tool.poetry.dependencies]
+python = "^3.8"
+
+[tool.poetry.dev-dependencies]
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
