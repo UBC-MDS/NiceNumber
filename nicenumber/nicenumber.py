@@ -46,3 +46,30 @@ def to_numeric(string:str, family:str = 'number'):
     """
 
     return
+
+def to_pandas(df, col=None, type='human', family='number'):
+    """Change the formatting of text in column(s) of data in a dataframe
+
+    Parameters
+    ----------
+    df : pandas.core.frame.DataFrame
+        dataframe to apply formatting
+    col : str, list
+        list of column(s) to apply formatting
+    type : str
+        type of transformation, either 'human' (default) for human readable format or 'num' for numeric format
+    family : str, optional
+        'number' or 'filesize', by default 'number'
+
+    Returns
+    ----------
+    df : pandas.core.frame.DataFrame
+        formatted dataframe
+
+    Examples
+    ----------
+    df.style.apply(to_pandas, col=['A','B','C'])
+        Returns a dataframe with the values in columns A, B and C converted to a human readable numeric format.
+    """      
+
+    return
