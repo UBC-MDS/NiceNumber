@@ -37,7 +37,7 @@ def to_numeric(string:str, family:str = "number"):
         
     Returns
     -------
-    int
+    float
     
     Examples
     --------
