@@ -2,7 +2,7 @@
 
 ![](https://github.com/camharris22/nicenumber/workflows/build/badge.svg) [![codecov](https://codecov.io/gh/camharris22/nicenumber/branch/main/graph/badge.svg)](https://codecov.io/gh/camharris22/nicenumber) ![Release](https://github.com/camharris22/nicenumber/workflows/Release/badge.svg) [![Documentation Status](https://readthedocs.org/projects/nicenumber/badge/?version=latest)](https://nicenumber.readthedocs.io/en/latest/?badge=latest)
 
-This package makes numbers nice
+This Python package provides basic functions that make numbers display nicely. In most real-world problems, the datasets are raw and we need to deal with number formats to make them readable for humans or for computers. Usually, a few or more lines of coding are needed while dealing with number-display problems so we are thinking of compressing the time and programming work on this issue. This package solves this kind of problems in a way of transfer forward and backward from long digit numbers to human-readable ones. There are functions doing single number transactions, column transactions from a pandas data frame, and displaying colors of input numbers.  
 
 ## Installation
 
@@ -12,7 +12,24 @@ $ pip install -i https://test.pypi.org/simple/ nicenumber
 
 ## Features
 
-- TODO
+There are four functions in this package:
+
+- `to_human`
+This function converts numeric value to human-readable string representations. Users need to use a specific number as input and choose decimal precision and prefixes of filesize or numbers as optionals. The function will return a human-readable string.
+
+- `to_numeric`
+This function converts a human-readble value to a Python readable numeric value. Users need to use a specific human-readable string of numbers as input and choose the prefixes of filesize or numbers as optionals. The function will return a float.
+
+- `to_pandas`
+
+
+- `to_color`
+This function separate numeric values to parts starting from the right and each part contains three digits. Then it gives different colors to each part and the default colors are red, green, yellow, and blue. Users need to use a specific number as input and choose a list of colors they want to assign on the number as an optional. The function will return a string that can be used in `print()` function to visual numbers with colors.
+
+## Python Ecosystem
+
+There are several python packages that have similar functionalities with this package in the Python ecosystem. For example, package [`numerize`](https://github.com/davidsa03/numerize) converts large numbers like 1234567.12 into 1.23M  and package [`millify`](https://github.com/azaitsev/millify) not only does the same thing as `numerize` but also adds separators to large number and plays around with filesize prefixes(kB, MB, GB). In addition, package [`humanreadable`](https://github.com/thombashi/humanreadable) converts from human-readable values to Python values and package [`humanfriendly`](https://humanfriendly.readthedocs.io/en/latest/#)  formats numbers text interfaces more user friendly from different aspects such as transferring between units. We aim to optimize those existing packages so that the users can use one package instead of using several packages at the same time.
+
 
 ## Dependencies
 
