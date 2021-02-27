@@ -46,3 +46,22 @@ def to_numeric(string:str, family:str = 'number'):
     """
 
     return
+
+
+def to_color(number:int, color:list = None):
+    """Give all parts of the number with different colors
+
+    Parameters
+    ----------
+    number : int
+        Integer number to be colored
+    color : list, optional
+        List of colors, by default includes 'Red', 'Green', 'Yellow' and 'Blue'
+
+    Returns
+    -------
+    str
+        String number with different colors
+    """
+
+    return ""
