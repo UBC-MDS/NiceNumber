@@ -47,7 +47,7 @@ def to_numeric(string:str, family:str = 'number'):
 
     return
 
-def to_pandas(df, col=None, type='human', family='number'):
+def to_pandas(df : pd.DataFrame, col : Union[str, list], transform_type : str ='human', family : str ='number'):
     """Change the formatting of text in column(s) of data in a dataframe
 
     Parameters
@@ -56,7 +56,7 @@ def to_pandas(df, col=None, type='human', family='number'):
         dataframe to apply formatting
     col : str, list
         list of column(s) to apply formatting
-    type : str
+    transform_type : str
         type of transformation, either 'human' (default) for human readable format or 'num' for numeric format
     family : str, optional
         'number' or 'filesize', by default 'number'
@@ -64,12 +64,11 @@ def to_pandas(df, col=None, type='human', family='number'):
     Returns
     ----------
     df : pandas.core.frame.DataFrame
-        formatted dataframe
+    When passed to a style function call, returns a dataframe with the values in columns A, B and C converted to a human readable numeric format.
 
     Examples
     ----------
-    df.style.apply(to_pandas, col=['A','B','C'])
-        Returns a dataframe with the values in columns A, B and C converted to a human readable numeric format.
+    >>> df.style.apply(to_pandas, col=['A','B','C'])
     """      
 
     return
