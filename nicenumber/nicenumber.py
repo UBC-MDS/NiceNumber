@@ -24,3 +24,25 @@ def to_human(n : float, precision : int = 0, family : str = 'number'):
     """
 
     return
+
+def to_numeric(string:str, family:str = "number"):
+    """Convert human readable string representation to numeric value
+
+    Parameters
+    ----------
+    string : str
+        human readable string representation to convert
+    family : str, optional
+        'number' or 'filesize', by default 'number'
+        
+    Returns
+    -------
+    int
+    
+    Examples
+    --------
+    >>> to_numeric(1.5M)
+    1500000
+    """
+
+    return
