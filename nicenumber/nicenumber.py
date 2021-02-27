@@ -25,7 +25,7 @@ def to_human(n : float, precision : int = 0, family : str = 'number'):
 
     return
 
-def to_numeric(string:str, family:str = "number"):
+def to_numeric(string:str, family:str = 'number'):
     """Convert human readable string representation to numeric value
 
     Parameters
