@@ -47,6 +47,31 @@ def to_numeric(string:str, family:str = 'number'):
 
     return
 
+def to_pandas(df : pd.DataFrame, col : Union[str, list], transform_type : str ='human', family : str ='number'):
+    """Change the formatting of text in column(s) of data in a dataframe
+
+    Parameters
+    ----------
+    df : pandas.core.frame.DataFrame
+        dataframe to apply formatting
+    col : str, list
+        list of column(s) to apply formatting
+    transform_type : str
+        type of transformation, either 'human' (default) for human readable format or 'num' for numeric format
+    family : str, optional
+        'number' or 'filesize', by default 'number'
+
+    Returns
+    ----------
+    df : pandas.core.frame.DataFrame
+    When passed to a style function call, returns a dataframe with the values in columns A, B and C converted to a human readable numeric format.
+
+    Examples
+    ----------
+    >>> df.style.apply(to_pandas, col=['A','B','C'])
+    """      
+
+    return
 
 def to_color(number:int, color:list = None):
     """Give all parts of the number with different colors
