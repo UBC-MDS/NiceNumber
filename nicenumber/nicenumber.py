@@ -24,3 +24,15 @@ def to_human(n : float, precision : int = 0, family : str = 'number'):
     """
 
     return
+
+
+def prettify(n : int, separator : str = ','):
+    """Separate with predefined separator
+
+    Parameters
+    ----------
+    n : int
+        decimal number
+    separator : str, optional
+        separator, by default ','
+    """
