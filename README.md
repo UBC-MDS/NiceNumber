@@ -21,7 +21,7 @@ This function converts numeric value to human-readable string representations. U
 This function converts a human-readble value to a Python readable numeric value. Users need to use a specific human-readable string of numbers as input and choose the prefixes of filesize or numbers as optionals. The function will return a float.
 
 - `to_pandas`
-
+This function changes the formatting of text in one or more columns of data in a dataframe. The inputs should include a pandas data frame, column name(s), and two optionals: transform type(eg. human) and type of prefixes. The function will return a dataframe with the values from the input columns transferred to the transform type(human-readable by default).
 
 - `to_color`
 This function separate numeric values to parts starting from the right and each part contains three digits. Then it gives different colors to each part and the default colors are red, green, yellow, and blue. Users need to use a specific number as input and choose a list of colors they want to assign on the number as an optional. The function will return a string that can be used in `print()` function to visual numbers with colors.
