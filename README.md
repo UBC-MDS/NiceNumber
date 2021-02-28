@@ -60,7 +60,7 @@ The official documentation is hosted on Read the Docs: https://nicenumber.readth
 
 ## Contributors
 
-We welcome and recognize all contributions. You can see a list of current contributors in the [contributors tab](https://github.com/camharris22/nicenumber/graphs/contributors).
+We welcome and recognize all contributions. You can see a list of current contributors in the [contributors tab](https://github.com/UBC-MDS/NiceNumber/blob/main/CONTRIBUTORS.md).
 
 ### Credits
 
