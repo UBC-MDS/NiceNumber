@@ -2,6 +2,8 @@ import pandas as pd
 import math
 import re
 
+from typing import Union
+
 from .__init__ import getlog
 
 log = getlog(__name__)
