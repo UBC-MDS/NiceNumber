@@ -17,6 +17,15 @@ There are four functions in this package:
 - `to_human`
 This function converts numeric value to human-readable string representations. Users need to use a specific number as input and choose decimal precision and prefixes of filesize or numbers as optionals. The function will return a human-readable string.
 
+```python
+import nicenumber as nn
+
+n = 1234.5
+nn.to_human(n=n, precision=1, family='number')
+
+>>> '1.2K'
+```
+
 - `to_numeric`
 This function converts a human-readble value to a Python readable numeric value. Users need to use a specific human-readable string of numbers as input and choose the prefixes of filesize or numbers as optionals. The function will return a float.
 
@@ -28,7 +37,13 @@ This function separate numeric values to parts starting from the right and each 
 
 ## Python Ecosystem
 
-There are several python packages that have similar functionalities with this package in the Python ecosystem. For example, package [`numerize`](https://github.com/davidsa03/numerize) converts large numbers like 1234567.12 into 1.23M  and package [`millify`](https://github.com/azaitsev/millify) not only does the same thing as `numerize` but also adds separators to large number and plays around with filesize prefixes(kB, MB, GB). In addition, package [`humanreadable`](https://github.com/thombashi/humanreadable) converts from human-readable values to Python values and package [`humanfriendly`](https://humanfriendly.readthedocs.io/en/latest/#)  formats numbers text interfaces more user friendly from different aspects such as transferring between units. We aim to optimize those existing packages so that the users can use one package instead of using several packages at the same time.
+There are several python packages that have similar functionalities with this package in the Python ecosystem. For example:
+- [`numerize`](https://github.com/davidsa03/numerize) converts large numbers like 1234567.12 into 1.23M.
+- [`millify`](https://github.com/azaitsev/millify) not only does the same thing as `numerize` but also adds separators to large number and plays around with filesize prefixes(kB, MB, GB).
+- [`humanreadable`](https://github.com/thombashi/humanreadable) converts from human-readable values to Python values.
+- [`humanfriendly`](https://humanfriendly.readthedocs.io/en/latest/#) formats numbers text interfaces more user friendly from different aspects such as transferring between units.
+ 
+We aim to optimize those existing packages so that the users can use one package instead of using several packages at the same time.
 
 
 ## Dependencies
