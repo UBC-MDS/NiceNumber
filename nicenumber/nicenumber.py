@@ -4,9 +4,9 @@ import re
 
 from typing import Union
 
-from .__init__ import getlog
+#from .__init__ import getlog
 
-log = getlog(__name__)
+#log = getlog(__name__)
 
 # TODO should define conversion type prefixes for "filesize" or "large/small numbers" (eg B T Q etc) here at module level?
 
@@ -89,6 +89,34 @@ def to_color(number:int, color:list = None):
     -------
     str
         String number with different colors
+
+    Examples
+    ----------
+    >>> print(to_color(13637373737348738787, ['Yellow', 'Red']))
     """
 
-    return ""
+    
+    palette = {'Black':'\033[30m', 'Red':'\033[31m', 'Green':'\033[32m', 'Yellow':'\033[33m', 'Blue':'\033[34m', 'Cyan':'\033[36m', 'White':'\033[37m', 'Underline':'\033[4m', 'Reset':'\033[0m'}
+    c = ['Red', 'Green', 'Yellow', 'Blue'] if color==None else color
+    
+    d = str(number)
+    offset = len(d)%3
+    if offset != 0:
+        s = [d[0:offset]]+[d[i:i+3] for i in range(offset, len(d), 3)]
+    else:
+        s = [d[i:i+3] for i in range(offset, len(d), 3)]
+
+    ans = ''
+
+    for i, num in enumerate(s):
+        fill = palette[c[i%len(c)]]
+        ans += fill
+        ans += num
+        ans += palette['Reset']
+
+    return ans
+
+
+
+if __name__ == '__main__':
+    print(to_color(13637373737348738787, ['Yellow', 'Red']))
