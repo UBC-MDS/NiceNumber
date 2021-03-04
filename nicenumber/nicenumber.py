@@ -175,7 +175,19 @@ def to_color(number:int, color:list = None):
     if not isinstance(number, int):
         raise TypeError('Input number should be int type')
     
-    palette = {'Black':'\033[30m', 'Red':'\033[31m', 'Green':'\033[32m', 'Yellow':'\033[33m', 'Blue':'\033[34m', 'Cyan':'\033[36m', 'White':'\033[37m', 'Underline':'\033[4m', 'Reset':'\033[0m'}
+    palette = dict(
+        black=30,
+        red=31,
+        green=32,
+        yellow=33,
+        blue=34,
+        cyan=36,
+        white=37,
+        underline=4,
+        reset=0)
+    
+    # create full color codes as a dict comp
+    palette = {k: f'\033[{color_code}m' for k, color_code in palette.items()}
     c = ['Red', 'Green', 'Yellow', 'Blue'] if color==None else color
     
     d = str(number)
