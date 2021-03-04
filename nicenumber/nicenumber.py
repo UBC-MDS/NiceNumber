@@ -1,8 +1,9 @@
-import pandas as pd
 import math
 import re
-
 from typing import Union
+
+import numpy as np
+import pandas as pd
 
 from .__init__ import getlog
 
@@ -56,6 +57,18 @@ def to_human(
     >>> '69.4K'
     """
 
+    def raise_err(err):
+        """Internal helper func to raise err if 'raise' else pd.NA"""
+        if errors == 'coerce':
+            return pd.NA
+        else:
+            raise err
+
+    # assert correct dtype
+    if not issubclass(np.dtype(type(n)).type, np.number):
+        err = TypeError(f'Value must be numeric, not "{type(n)}". Invalid value: "{n}"')
+        return raise_err(err)
+
     # assert family in suffixs
     if not family in suffixs:
         raise ValueError(
@@ -63,7 +76,7 @@ def to_human(
 
     # calculate final number and index position for suffix
     base = 3
-    order = int(math.log10(abs(n)) // 1)
+    order = 0 if n == 0 else int(math.log10(abs(n)) // 1)
     idx = int(order / base)
     number = n / 10 ** (3 * idx)
 
@@ -74,14 +87,13 @@ def to_human(
     max_len = len(suffix_list) - 1
 
     if idx > max_len:
-        if errors == 'coerce':
-            return pd.NA
-        else:
-            raise ValueError(
-                'Number too large for conversion. Maximum order: 100e{e} ({suff})' \
-                    .format(
-                        e=max_len * base,
-                        suff=suffix_list[-1]))
+        err = ValueError(
+            'Number too large for conversion. Maximum order: 100e{e} ({suff})' \
+                .format(
+                    e=max_len * base,
+                    suff=suffix_list[-1]))
+
+        return raise_err(err)
 
     if not family == 'number':
         currency = False
