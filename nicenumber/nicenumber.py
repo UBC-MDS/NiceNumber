@@ -2,14 +2,10 @@ import math
 import re
 from typing import Union
 
-<<<<<<< HEAD
-#from .__init__ import getlog
-=======
 import numpy as np
 import pandas as pd
 
-from .__init__ import getlog
->>>>>>> 67425fb96697339b565ddeb42c43f1ea2ce82e03
+#from .__init__ import getlog
 
 #log = getlog(__name__)
 
@@ -175,7 +171,9 @@ def to_color(number:int, color:list = None):
     ----------
     >>> print(to_color(13637373737348738787, ['Yellow', 'Red']))
     """
-
+    
+    if not isinstance(number, int):
+        raise TypeError('Input number should be int type')
     
     palette = {'Black':'\033[30m', 'Red':'\033[31m', 'Green':'\033[32m', 'Yellow':'\033[33m', 'Blue':'\033[34m', 'Cyan':'\033[36m', 'White':'\033[37m', 'Underline':'\033[4m', 'Reset':'\033[0m'}
     c = ['Red', 'Green', 'Yellow', 'Blue'] if color==None else color
@@ -194,10 +192,10 @@ def to_color(number:int, color:list = None):
         ans += fill
         ans += num
         ans += palette['Reset']
-
+    
     return ans
 
 
 
 if __name__ == '__main__':
-    print(to_color(13637373737348738787, ['Yellow', 'Red']))
+    print(to_color(123123123123123123123123123))
