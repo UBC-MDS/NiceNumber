@@ -171,7 +171,8 @@ def to_color(number:int, color:list = None):
     ----------
     >>> print(to_color(13637373737348738787, ['Yellow', 'Red']))
     """
-    
+if not all(item in palette for item in color):
+    raise ValueError(f'Colors not available in palette. Available options: {list(palette.keys())}')
     if not isinstance(number, int):
         raise TypeError('Input number should be int type')
     
