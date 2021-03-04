@@ -1,0 +1,9 @@
+name: nicenumber
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.9
+  - pandas
+  - pytest
+prefix: /opt/miniconda3/envs/nicenumber
