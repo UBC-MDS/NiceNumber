@@ -60,7 +60,7 @@ def test_to_color():
         nn.to_color('abc')
 
     #test one digit number
-    assert nn.to_color(1, ['Yellow', 'Red']) == '\x1b[33m1\x1b[0m'
+    assert nn.to_color(1, ['yellow', 'red']) == '\x1b[33m1\x1b[0m'
 
     #test even digits number with default color
     assert nn.to_color(1234) == '\x1b[31m1\x1b[0m\x1b[32m234\x1b[0m'

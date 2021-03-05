@@ -171,11 +171,6 @@ def to_color(number:int, color:list = None):
     ----------
     >>> print(to_color(13637373737348738787, ['Yellow', 'Red']))
     """
-if not all(item in palette for item in color):
-    raise ValueError(f'Colors not available in palette. Available options: {list(palette.keys())}')
-    if not isinstance(number, int):
-        raise TypeError('Input number should be int type')
-    
     palette = dict(
         black=30,
         red=31,
@@ -189,7 +184,11 @@ if not all(item in palette for item in color):
     
     # create full color codes as a dict comp
     palette = {k: f'\033[{color_code}m' for k, color_code in palette.items()}
-    c = ['Red', 'Green', 'Yellow', 'Blue'] if color==None else color
+
+    if not isinstance(number, int):
+        raise TypeError('Input number should be int type')
+    
+    c = ['red', 'green', 'yellow', 'blue'] if color==None else color
     
     d = str(number)
     offset = len(d)%3
@@ -204,8 +203,6 @@ if not all(item in palette for item in color):
         fill = palette[c[i%len(c)]]
         ans += fill
         ans += num
-        ans += palette['Reset']
+        ans += palette['reset']
     
     return ans
-
-
