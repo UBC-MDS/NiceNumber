@@ -29,6 +29,15 @@ nn.to_human(n=n, precision=1, family='number')
 - `to_numeric`
 This function converts a human-readble value to a Python readable numeric value. Users need to use a specific human-readable string of numbers as input and choose the prefixes of filesize or numbers as optionals. The function will return a float.
 
+```python
+import nicenumber as nn
+
+string = '4.51k'
+nn.to_numeric(string=string, family='number')
+
+>>> '4510.0'
+```
+
 - `to_pandas`
 This function changes the formatting of text in one or more columns of data in a dataframe. The inputs should include a pandas data frame, column name(s), and two optionals: transform type(eg. human) and type of prefixes. The function will return a dataframe with the values from the input columns transferred to the transform type(human-readable by default).
 

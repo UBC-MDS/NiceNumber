@@ -8,6 +8,26 @@ from pytest import raises
 def test_version():
     assert __version__ == '0.1.0'
 
+def check_expected_result(func, vals : list):
+    """Call function with kw args for each dict in list
+
+    Parameters
+    ----------
+    func : callable
+        Function to call
+    vals : list
+        List of dicts with kw args
+    """
+
+    for kw, expected_result in vals:
+        result = func(**kw)
+
+        # handle pd.NA without equality
+        if pd.isnull(expected_result):
+            assert pd.isnull(result)
+        else:
+            assert result == expected_result
+
 def test_to_human():
     """Test to_human function"""
     f = nn.to_human
@@ -31,6 +51,7 @@ def test_to_human():
         (dict(n=0, prec=0), '0'),
         (dict(n=0.12, prec=2), '0.12'),
         (dict(n=4500, prec=1), '4.5K'),
+        (dict(n=4500, prec=1, custom_suff=['apple', 'banana']), '4.5apple'),
         (dict(n=4510, prec=2), '4.51K'),
         (dict(n=4510.1234, prec=2), '4.51K'),
         (dict(n=4510, prec=2, currency=True), '$4.51K'),
@@ -40,15 +61,32 @@ def test_to_human():
         (dict(n=4510000, prec=2, family='filesize'), '4.51MB'),
         (dict(n='69420090000', prec=3, errors='coerce'), pd.NA),
         (dict(n=1e30, prec=3, errors='coerce'), pd.NA)]
+    
+    check_expected_result(func=f, vals=vals)
 
-    for kw, expected_result in vals:
-        result = f(**kw)
+def test_to_numeric():
+    """Test to_numeric function"""
+    f = nn.to_numeric
+    
+    # test 'family' ValueError raised with wrong family
+    raises(ValueError, f, string = '12.2M', family='wrong family').match('family')
 
-        # handle pd.NA without equality
-        if expected_result is pd.NA:
-            assert result is pd.NA
-        else:
-            assert result == expected_result
+    # test TypeError raised with wrong input type
+    raises(TypeError, f, string = [0]).match('string')
+
+    # test 'format' TypeError raised wth wrong input type
+    raises(ValueError, f, string = '69420kk').match('string')
+
+    vals = [
+        (dict(string='1.2K'), 1200.0),
+        (dict(string='4.51k'), 4510.0),
+        (dict(string='4.5apple', custom_suff=['apple', 'banana']), 4500),
+        (dict(string='#@#$220k'), 220000.0),
+        (dict(string='4.51KB', family='filesize'), 4510.0),
+        (dict(string='4.51m'), 4510000.0),
+        (dict(string='69.420B'), 69420000000),
+        (dict(string='4.51mb', family='filesize'), 4510000.0),
+        (dict(string='6942klkl', errors='coerce'), pd.NA)]
 
 
 
@@ -68,5 +106,4 @@ def test_to_color():
     #test a large number of digits with default color
     assert nn.to_color(123123123123123123123123123) == '\x1b[31m123\x1b[0m\x1b[32m123\x1b[0m\x1b[33m123\x1b[0m\x1b[34m123\x1b[0m\x1b[31m123\x1b[0m\x1b[32m123\x1b[0m\x1b[33m123\x1b[0m\x1b[34m123\x1b[0m\x1b[31m123\x1b[0m'
 
-    
-
+   
