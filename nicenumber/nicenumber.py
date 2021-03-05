@@ -126,7 +126,7 @@ def to_numeric(string:str, family:str = 'number'):
 
     return
 
-def to_pandas(df : pd.DataFrame, col_names : Union[str, list] = df.columns.values.tolist(), transform_type : str ='human', family : str ='number'):
+def to_pandas(df : pd.DataFrame, col_names : Union[str, list] = None, transform_type : str ='human', family : str ='number'):
     """Change the formatting of data in column(s) of a dataframe to either human readable or numeric
 
     Parameters
@@ -137,6 +137,8 @@ def to_pandas(df : pd.DataFrame, col_names : Union[str, list] = df.columns.value
         list of column(s) names to apply formatting to, default is all columns
     transform_type : str
         type of transformation, either 'human' (default) for human readable format or 'num' for numeric format
+    family : str, optional
+        'number' or 'filesize', by default 'number'
 
     Returns
     ----------
@@ -146,28 +148,32 @@ def to_pandas(df : pd.DataFrame, col_names : Union[str, list] = df.columns.value
     Examples
     ----------
     >>> to_pandas(df, col_names=['A', 'B', 'C'], transform_type='human')
-    For discussion with group: My function isn't actually modifying the style at all so I don't think we need the df.style.applymap here
     """     
-    # TODO -> Add additional arguments option such as precision, etc. 
 
-    # Check input datatypes
+    # TODO -> Add additional arguments option such as precision, etc. if time 
+    if col_names is None:
+        col_names = df.columns.values.tolist()
+        
+try:
+    type(df) != pd.DataFrame
+except ValueError:
+    print("Input must be a of type pd.DataFrame")
+    # Check input datatypes, convert these to raise exception instead
     assert type(df) == pd.DataFrame, "Input must be of type pd.DataFrame."
     assert type(col_names) == str or type(col_names) == list, "col_names must be of type str or list!"
-    assert col_names in df.columns.values.tolist(), "Columns not present in dataframe!" 
+    assert [i for i in df.columns.values.tolist() if i in col_names] == col_names, "Columns not present in dataframe!" 
     assert transform_type in ['human', 'num'], "Invalid transform_type, try 'human' or 'num'." 
 
-    # Loop through input variable col_names (default is all) and rows in df
-    # Check transform type to apply to df
     # Apply transformations element-wise
+    # TODO -> figure out how to not modify original df  
     for col in col_names:
         for row in df.index:
             if transform_type == 'human':
                 df.loc[df.index[row], col] = to_human(float(df.loc[df.index[row], col]))
             elif transform_type == 'num':
                 df.loc[df.index[row], col] = to_numeric(float(df.loc[df.index[row], col]))
-            # should we add a color option too????
-            #elif transform_type == 'color':
-            #    df.loc[df.index[row], col] = to_color(df.loc[df.index[row], col])
+            elif transform_type == 'color':
+                df.loc[df.index[row], col] = to_color(df.loc[df.index[row], col])
 
     return df
 
