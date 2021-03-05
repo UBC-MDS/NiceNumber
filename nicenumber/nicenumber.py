@@ -209,6 +209,3 @@ if not all(item in palette for item in color):
     return ans
 
 
-
-if __name__ == '__main__':
-    print(to_color(123123123123123123123123123))
