@@ -88,4 +88,22 @@ def test_to_numeric():
         (dict(string='4.51mb', family='filesize'), 4510000.0),
         (dict(string='6942klkl', errors='coerce'), pd.NA)]
 
-    check_expected_result(func=f, vals=vals)
+
+
+def test_to_color():
+    """ Test to_color() function"""
+
+    # test exception handing
+    with raises(TypeError, match=r".* int .*"):
+        nn.to_color('abc')
+
+    #test one digit number
+    assert nn.to_color(1, ['yellow', 'red']) == '\x1b[33m1\x1b[0m'
+
+    #test even digits number with default color
+    assert nn.to_color(1234) == '\x1b[31m1\x1b[0m\x1b[32m234\x1b[0m'
+
+    #test a large number of digits with default color
+    assert nn.to_color(123123123123123123123123123) == '\x1b[31m123\x1b[0m\x1b[32m123\x1b[0m\x1b[33m123\x1b[0m\x1b[34m123\x1b[0m\x1b[31m123\x1b[0m\x1b[32m123\x1b[0m\x1b[33m123\x1b[0m\x1b[34m123\x1b[0m\x1b[31m123\x1b[0m'
+
+   
