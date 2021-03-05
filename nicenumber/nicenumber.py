@@ -220,7 +220,7 @@ def to_numeric(
     power = suffix_list.index(suff)
 
     # extract number from string
-    # pattern = digit one or more times, decimal zero or more, digit one or more
+    # pattern = digit one or more times, decimal zero or more, digit zero or more
     number = re.search(r'\d+\.*\d*', string)[0]
     return float(number) * (base ** power)
 
