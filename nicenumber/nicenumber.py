@@ -14,6 +14,12 @@ suffixs = dict(
     number=['K', 'M', 'B', 'T', 'Q'],
     filesize=['KB', 'MB', 'GB', 'TB', 'PB'])
 
+def raise_err(err, errors):
+    """Internal helper func to raise err if 'raise' else pd.NA"""
+    if errors == 'coerce': 
+        return pd.NA
+    else:
+        raise err
 
 def to_human(
     n : float,
@@ -57,17 +63,10 @@ def to_human(
     >>> '69.4K'
     """
 
-    def raise_err(err):
-        """Internal helper func to raise err if 'raise' else pd.NA"""
-        if errors == 'coerce':
-            return pd.NA
-        else:
-            raise err
-
     # assert correct dtype
     if not issubclass(np.dtype(type(n)).type, np.number):
         err = TypeError(f'Value must be numeric, not "{type(n)}". Invalid value: "{n}"')
-        return raise_err(err)
+        return raise_err(err, errors)
 
     # assert family in suffixs
     if not family in suffixs:
@@ -93,7 +92,7 @@ def to_human(
                     e=max_len * base,
                     suff=suffix_list[-1]))
 
-        return raise_err(err)
+        return raise_err(err, errors)
 
     if not family == 'number':
         currency = False
@@ -128,13 +127,6 @@ def to_numeric(string:str, family:str = 'number', errors : str = 'raise'):
     1500000
     """
 
-    def raise_err(err):
-        """Internal helper func to raise err if 'raise' else pd.NA"""
-        if errors == 'coerce': 
-            return pd.NA
-        else:
-            raise err
-
     #create function to check if string can be converted to a number    
     def isfloat(value):
         try:
@@ -153,13 +145,11 @@ def to_numeric(string:str, family:str = 'number', errors : str = 'raise'):
         # assert type of string 
         if type(string) != str:
             err = TypeError(f'Input value must be a string or number, not "{type(string)}". Invalid value: "{string}"')
-            return raise_err(err)
+            return raise_err(err, errors)
         # assert family in suffixs
         if not family in suffixs:
-            err = ValueError(
+            raise ValueError(
             f'Invalid family: "{family}". Valid options: {list(suffixs)}')
-            return raise_err(err)
-
     
     lis_suf = list(suffixs.values())
     base = 10**3
@@ -169,7 +159,7 @@ def to_numeric(string:str, family:str = 'number', errors : str = 'raise'):
         if suf not in lis_suf[0]: 
             err = ValueError(
                 f'Invalid string suffix: "{string[-1]}". Valid options: {lis_suf[0]}')
-            return raise_err(err)
+            return raise_err(err, errors)
 
         else:
             power = lis_suf[0].index(suf) + 1
@@ -180,7 +170,7 @@ def to_numeric(string:str, family:str = 'number', errors : str = 'raise'):
         if suf not in lis_suf[1]:
             err = ValueError(
                 f'Invalid string suffix: "{string[-2:]}". Valid options: {lis_suf[1]}')
-            return raise_err(err)
+            return raise_err(err, errors)
         else:
             power = lis_suf[1].index(suf) + 1
             return float(string[:-2])*(base**power)
