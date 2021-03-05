@@ -33,7 +33,7 @@ This function converts a human-readble value to a Python readable numeric value.
 import nicenumber as nn
 
 string = '4.51k'
-nn.to_numeric(string = string, family='number')
+nn.to_numeric(string=string, family='number')
 
 >>> '4510.0'
 ```
