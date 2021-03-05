@@ -50,3 +50,25 @@ def test_to_human():
         else:
             assert result == expected_result
 
+def test_to_numeric():
+    """Test to_numeric function"""
+    f = nn.to_numeric
+    
+    # test 'family' ValueError raised with wrong family
+    raises(ValueError, f, string = '12.2M', family='wrong family').match('family')
+
+    # test TypeError raised with wrong input type
+    raises(TypeError, f, string = [0]).match('string')
+
+    # test 'format' TypeError raised wth wrong input type
+    raises(ValueError, f, string = '69420kk').match('string')
+
+    vals = [
+        (dict(string='1.2K'), 1200.0),
+        (dict(string = '4.51k'), 4510.0),
+        (dict(string= '#@#$220k'), 220000.0),
+        (dict(string ='4.51KB',  family='filesize'), 4510.0),
+        (dict(string = '4.51m'), 4510000.0),
+        (dict(string = '69.420B'), 69420000000),
+        (dict(string = '4.51mb', family='filesize'), 4510000.0),
+        (dict(string = '6942klkl',  errors='coerce'), pd.NA)]
