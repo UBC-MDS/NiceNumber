@@ -151,18 +151,28 @@ def to_pandas(df : pd.DataFrame, col_names : Union[str, list] = None, transform_
     """     
 
     # TODO -> Add additional arguments option such as precision, etc. if time 
+    if not type(df) == pd.DataFrame:
+        raise TypeError(
+            'Input must be of type pd.DataFrame')
+
     if col_names is None:
         col_names = df.columns.values.tolist()
         
-try:
-    type(df) != pd.DataFrame
-except ValueError:
-    print("Input must be a of type pd.DataFrame")
-    # Check input datatypes, convert these to raise exception instead
-    assert type(df) == pd.DataFrame, "Input must be of type pd.DataFrame."
-    assert type(col_names) == str or type(col_names) == list, "col_names must be of type str or list!"
-    assert [i for i in df.columns.values.tolist() if i in col_names] == col_names, "Columns not present in dataframe!" 
-    assert transform_type in ['human', 'num'], "Invalid transform_type, try 'human' or 'num'." 
+    if not type(df) == pd.DataFrame:
+        raise TypeError(
+            'Input must be of type pd.DataFrame')
+    
+    if not (type(col_names) == str or type(col_names) == list):
+        raise TypeError(
+            'col_names must be of type str or list')
+
+    if not [i for i in df.columns.values.tolist() if i in col_names] == col_names:
+        raise ValueError(
+            'One or more columns not present in dataframe!')
+
+    if not transform_type in ['human', 'num', 'color']:
+        raise ValueError(
+            "Invalid transform_type, valid options: ['human', 'num', 'color']")
 
     # Apply transformations element-wise
     # TODO -> figure out how to not modify original df  
@@ -173,7 +183,7 @@ except ValueError:
             elif transform_type == 'num':
                 df.loc[df.index[row], col] = to_numeric(float(df.loc[df.index[row], col]))
             elif transform_type == 'color':
-                df.loc[df.index[row], col] = to_color(df.loc[df.index[row], col])
+                df.loc[df.index[row], col] = to_color(int(df.loc[df.index[row], col]))
 
     return df
 
