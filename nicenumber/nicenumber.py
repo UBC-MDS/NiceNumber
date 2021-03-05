@@ -148,14 +148,17 @@ def to_pandas(df : pd.DataFrame, col_names : Union[str, list] = df.columns.value
     >>> to_pandas(df, col_names=['A', 'B', 'C'], transform_type='human')
     For discussion with group: My function isn't actually modifying the style at all so I don't think we need the df.style.applymap here
     """     
-    # test ideas: 
-    # check if dataframe object passed to function
-    # check datatypes in dataframe (must be numeric)
+    # TODO -> Add additional arguments option such as precision, etc. 
+
+    # Check input datatypes
+    assert type(df) == pd.DataFrame, "Input must be of type pd.DataFrame."
+    assert type(col_names) == str or type(col_names) == list, "col_names must be of type str or list!"
+    assert col_names in df.columns.values.tolist(), "Columns not present in dataframe!" 
+    assert transform_type in ['human', 'num'], "Invalid transform_type, try 'human' or 'num'." 
 
     # Loop through input variable col_names (default is all) and rows in df
     # Check transform type to apply to df
     # Apply transformations element-wise
-    # TODO -> Add additional arguments option such as precision, etc. 
     for col in col_names:
         for row in df.index:
             if transform_type == 'human':
