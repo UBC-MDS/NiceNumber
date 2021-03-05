@@ -112,7 +112,11 @@ def to_numeric(string:str, family:str = 'number'):
     string : str
         human readable string representation to convert
     family : str, optional
-        'number' or 'filesize', by default 'number'
+        Suffix family, ['number', 'filesize'], default 'number'
+    errors : str
+        'raise', 'coerce', default 'raise'
+        If 'raise', then invalid parsing will raise an exception.
+        If 'coerce', then invalid parsing will return pd.NA.
         
     Returns
     -------
@@ -123,8 +127,37 @@ def to_numeric(string:str, family:str = 'number'):
     >>> to_numeric(1.5M)
     1500000
     """
+    def raise_err(err):
+        """Internal helper func to raise err if 'raise' else pd.NA"""
+        if errors == 'coerce': 
+            return pd.NA
+        else:
+            raise err
 
-    return
+    # assert correct dtype
+    if not issubclass(np.dtype(type(string)).type, np.str):
+        err = TypeError(f'Input value must be a string, not "{type(string)}". Invalid value: "{string}"')
+        return raise_err(err)
+
+    # assert family in suffixs
+    if not family in suffixs:
+        raise ValueError(
+            f'Invalid family: "{family}". Valid options: {list(suffixs)}')
+    
+    # assert correct structure
+    if string[-1].upper() not in list(suffixs.values())[0] or string[-2:].upper() not in list(suffixs.values())[1]:
+        raise ValueError(
+            f'Invalid string suffix: "{string[-1]} or {string[-2:]}". Valid options: {list(suffixs.values)}')
+    
+    base = 10**3
+    if string[-1].upper() in list(suffixs.values())[0]:
+        power = list(suffixs.values())[0].index( string[-1].upper()) + 1
+        number = int(string[:-1])*(base**power)
+    else:
+        power = list(suffixs.values())[1].index( string[-2:].upper()) + 1
+        number = int(string[:-2])*(base**power)
+
+    return number
 
 def to_pandas(df : pd.DataFrame, col : Union[str, list], transform_type : str ='human', family : str ='number'):
     """Change the formatting of text in column(s) of data in a dataframe
