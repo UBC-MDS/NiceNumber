@@ -5,9 +5,9 @@ from typing import Union
 import numpy as np
 import pandas as pd
 
-from .__init__ import getlog
+#from .__init__ import getlog
 
-log = getlog(__name__)
+#log = getlog(__name__)
 
 # global suffix lists
 suffixs = dict(
@@ -166,6 +166,46 @@ def to_color(number:int, color:list = None):
     -------
     str
         String number with different colors
-    """
 
-    return ""
+    Examples
+    ----------
+    >>> print(to_color(13637373737348738787, ['Yellow', 'Red']))
+    """
+if not all(item in palette for item in color):
+    raise ValueError(f'Colors not available in palette. Available options: {list(palette.keys())}')
+    if not isinstance(number, int):
+        raise TypeError('Input number should be int type')
+    
+    palette = dict(
+        black=30,
+        red=31,
+        green=32,
+        yellow=33,
+        blue=34,
+        cyan=36,
+        white=37,
+        underline=4,
+        reset=0)
+    
+    # create full color codes as a dict comp
+    palette = {k: f'\033[{color_code}m' for k, color_code in palette.items()}
+    c = ['Red', 'Green', 'Yellow', 'Blue'] if color==None else color
+    
+    d = str(number)
+    offset = len(d)%3
+    if offset != 0:
+        s = [d[0:offset]]+[d[i:i+3] for i in range(offset, len(d), 3)]
+    else:
+        s = [d[i:i+3] for i in range(offset, len(d), 3)]
+
+    ans = ''
+
+    for i, num in enumerate(s):
+        fill = palette[c[i%len(c)]]
+        ans += fill
+        ans += num
+        ans += palette['Reset']
+    
+    return ans
+
+
