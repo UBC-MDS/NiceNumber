@@ -104,7 +104,7 @@ def to_human(
         prec=prec,
         suffix=suffix_list[idx])
 
-def to_numeric(string:str, family:str = 'number'):
+def to_numeric(string:str, family:str = 'number', errors : str = 'raise'):
     """Convert human readable string representation to numeric value
 
     Parameters
@@ -127,6 +127,7 @@ def to_numeric(string:str, family:str = 'number'):
     >>> to_numeric(1.5M)
     1500000
     """
+
     def raise_err(err):
         """Internal helper func to raise err if 'raise' else pd.NA"""
         if errors == 'coerce': 
@@ -134,30 +135,56 @@ def to_numeric(string:str, family:str = 'number'):
         else:
             raise err
 
-    # assert correct dtype
-    if not issubclass(np.dtype(type(string)).type, np.str):
-        err = TypeError(f'Input value must be a string, not "{type(string)}". Invalid value: "{string}"')
-        return raise_err(err)
+    #create function to check if string can be converted to a number    
+    def isfloat(value):
+        try:
+          float(value)
+          return True
+        except ValueError:
+          return False
+        
+    #test whether input string can be convert to number
+    if isfloat(string) == True:
+        return float(string)
 
-    # assert family in suffixs
-    if not family in suffixs:
-        raise ValueError(
-            f'Invalid family: "{family}". Valid options: {list(suffixs)}')
-    
-    # assert correct structure
-    if string[-1].upper() not in list(suffixs.values())[0] or string[-2:].upper() not in list(suffixs.values())[1]:
-        raise ValueError(
-            f'Invalid string suffix: "{string[-1]} or {string[-2:]}". Valid options: {list(suffixs.values)}')
-    
-    base = 10**3
-    if string[-1].upper() in list(suffixs.values())[0]:
-        power = list(suffixs.values())[0].index( string[-1].upper()) + 1
-        number = int(string[:-1])*(base**power)
     else:
-        power = list(suffixs.values())[1].index( string[-2:].upper()) + 1
-        number = int(string[:-2])*(base**power)
+        # get rid of symbols before digit
+        string = re.sub("^[\D]+", "", string)
+        # assert type of string 
+        if type(string) != str:
+            err = TypeError(f'Input value must be a string or number, not "{type(string)}". Invalid value: "{string}"')
+            return raise_err(err)
+        # assert family in suffixs
+        if not family in suffixs:
+            err = ValueError(
+            f'Invalid family: "{family}". Valid options: {list(suffixs)}')
+            return raise_err(err)
 
-    return number
+    
+    lis_suf = list(suffixs.values())
+    base = 10**3
+    
+    if family == 'number':
+        suf = string[-1].upper()
+        if suf not in lis_suf[0]: 
+            err = ValueError(
+                f'Invalid string suffix: "{string[-1]}". Valid options: {lis_suf[0]}')
+            return raise_err(err)
+
+        else:
+            power = lis_suf[0].index(suf) + 1
+            return float(string[:-1])*(base**power)
+        
+    else:
+        suf = string[-2:].upper()
+        if suf not in lis_suf[1]:
+            err = ValueError(
+                f'Invalid string suffix: "{string[-2:]}". Valid options: {lis_suf[1]}')
+            return raise_err(err)
+        else:
+            power = lis_suf[1].index(suf) + 1
+            return float(string[:-2])*(base**power)
+
 
 def to_pandas(df : pd.DataFrame, col : Union[str, list], transform_type : str ='human', family : str ='number'):
     """Change the formatting of text in column(s) of data in a dataframe
