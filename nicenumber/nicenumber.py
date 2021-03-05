@@ -126,31 +126,47 @@ def to_numeric(string:str, family:str = 'number'):
 
     return
 
-def to_pandas(df : pd.DataFrame, col : Union[str, list], transform_type : str ='human', family : str ='number'):
-    """Change the formatting of text in column(s) of data in a dataframe
+def to_pandas(df : pd.DataFrame, col_names : Union[str, list] = df.columns.values.tolist(), transform_type : str ='human', family : str ='number'):
+    """Change the formatting of data in column(s) of a dataframe to either human readable or numeric
 
     Parameters
     ----------
     df : pandas.core.frame.DataFrame
         dataframe to apply formatting
-    col : str, list
-        list of column(s) to apply formatting
+    col_names : Union[str, list], optional
+        list of column(s) names to apply formatting to, default is all columns
     transform_type : str
         type of transformation, either 'human' (default) for human readable format or 'num' for numeric format
-    family : str, optional
-        'number' or 'filesize', by default 'number'
 
     Returns
     ----------
     df : pandas.core.frame.DataFrame
-    When passed to a style function call, returns a dataframe with the values in columns A, B and C converted to a human readable numeric format.
+    Returns a dataframe with the values in user specified columns transformed to a formatting of their choice
 
     Examples
     ----------
-    >>> df.style.apply(to_pandas, col=['A','B','C'])
-    """      
+    >>> to_pandas(df, col_names=['A', 'B', 'C'], transform_type='human')
+    For discussion with group: My function isn't actually modifying the style at all so I don't think we need the df.style.applymap here
+    """     
+    # test ideas: 
+    # check if dataframe object passed to function
+    # check datatypes in dataframe (must be numeric)
 
-    return
+    # Loop through input variable col_names (default is all) and rows in df
+    # Check transform type to apply to df
+    # Apply transformations element-wise
+    # TODO -> Add additional arguments option such as precision, etc. 
+    for col in col_names:
+        for row in df.index:
+            if transform_type == 'human':
+                df.loc[df.index[row], col] = to_human(float(df.loc[df.index[row], col]))
+            elif transform_type == 'num':
+                df.loc[df.index[row], col] = to_numeric(float(df.loc[df.index[row], col]))
+            # should we add a color option too????
+            #elif transform_type == 'color':
+            #    df.loc[df.index[row], col] = to_color(df.loc[df.index[row], col])
+
+    return df
 
 def to_color(number:int, color:list = None):
     """Give all parts of the number with different colors
