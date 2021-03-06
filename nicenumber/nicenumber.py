@@ -77,7 +77,8 @@ def to_human(
     custom_suff : Union[list, None] = None,
     currency : bool = False,
     currency_sym : str = '$',
-    errors : str = 'raise') -> str:
+    errors : str = 'raise',
+    **kw) -> str:
     """Convert numeric value to human readable string representation
 
     Parameters
@@ -153,7 +154,8 @@ def to_numeric(
     string : str,
     family : str = 'number',
     custom_suff : Union[list, None] = None,
-    errors : str = 'raise'):
+    errors : str = 'raise',
+    **kw):
     """Convert human readable string representation to numeric value
 
     Parameters
@@ -224,7 +226,12 @@ def to_numeric(
     number = re.search(r'\d+\.*\d*', string)[0]
     return float(number) * (base ** power)
 
-def to_pandas(df : pd.DataFrame, col_names : Union[str, list] = None, transform_type : str ='human', family : str ='number'):
+def to_pandas(
+    df : pd.DataFrame,
+    col_names : Union[str, list] = None,
+    transform_type : str ='human',
+    family : str ='number',
+    **kw):
     """Change the formatting of data in column(s) of a dataframe to either human readable or numeric
 
     Parameters
@@ -237,11 +244,13 @@ def to_pandas(df : pd.DataFrame, col_names : Union[str, list] = None, transform_
         type of transformation, either 'human' (default) for human readable format or 'num' for numeric format
     family : str, optional
         'number' or 'filesize', by default 'number'
+    **kw : kw args
+        extra args to pass to conversion function
 
     Returns
     ----------
     df : pandas.core.frame.DataFrame
-    Returns a dataframe with the values in user specified columns transformed to a formatting of their choice
+        dataframe with the values in user specified columns transformed to a formatting of their choice
 
     Examples
     ----------
@@ -249,43 +258,43 @@ def to_pandas(df : pd.DataFrame, col_names : Union[str, list] = None, transform_
     """     
 
     # TODO -> Add additional arguments option such as precision, etc. if time 
-    if not type(df) == pd.DataFrame:
-        raise TypeError(
-            'Input must be of type pd.DataFrame')
-
     if col_names is None:
-        col_names = df.columns.values.tolist()
-        
+        col_names = df.columns.tolist()
+
     if not type(df) == pd.DataFrame:
         raise TypeError(
             'Input must be of type pd.DataFrame')
     
-    if not (type(col_names) == str or type(col_names) == list):
+    if not isinstance(col_names, (str, list)):
         raise TypeError(
             'col_names must be of type str or list')
 
-    if not [i for i in df.columns.values.tolist() if i in col_names] == col_names:
+    if any(not item in df.columns for item in col_names):
         raise ValueError(
             'One or more columns not present in dataframe!')
 
-    if not transform_type in ['human', 'num', 'color']:
+    # convert transform type to function for df.assign
+    m_funcs = dict(
+        human=to_human,
+        num=to_numeric,
+        color=to_color)
+        
+    func = m_funcs.get(transform_type, None)
+    
+    if func is None:
         raise ValueError(
-            "Invalid transform_type, valid options: ['human', 'num', 'color']")
+            f'Invalid transform_type. Valid options: {list(m_funcs.keys())}')
+    
+    # create dict of eg {column_name: to_human(**kw)} for each col to convert
+    assign_cols = {col: lambda df: df[col].apply(func, **kw) for col in col_names}
 
-    # Apply transformations element-wise
-    # TODO -> figure out how to not modify original df  
-    for col in col_names:
-        for row in df.index:
-            if transform_type == 'human':
-                df.loc[df.index[row], col] = to_human(float(df.loc[df.index[row], col]))
-            elif transform_type == 'num':
-                df.loc[df.index[row], col] = to_numeric(float(df.loc[df.index[row], col]))
-            elif transform_type == 'color':
-                df.loc[df.index[row], col] = to_color(int(df.loc[df.index[row], col]))
+    return df.assign(**assign_cols)
 
-    return df
-
-def to_color(number:int, color:list = None):
+def to_color(
+    number : int,
+    color : list = None,
+    errors : str = 'raise',
+    **kw):
     """Give all parts of the number with different colors
 
     Parameters
@@ -294,6 +303,10 @@ def to_color(number:int, color:list = None):
         Integer number to be colored
     color : list, optional
         List of colors, by default includes 'Red', 'Green', 'Yellow' and 'Blue'
+    errors : str
+        'raise', 'coerce', default 'raise'
+        If 'raise', then invalid parsing will raise an exception.
+        If 'coerce', then invalid parsing will return pd.NA.
 
     Returns
     -------
@@ -318,8 +331,10 @@ def to_color(number:int, color:list = None):
     # create full color codes as a dict comp
     palette = {k: f'\033[{color_code}m' for k, color_code in palette.items()}
 
-    if not isinstance(number, int):
-        raise TypeError('Input number should be int type')
+    # print(number)
+    if not is_numeric(number):
+        err = TypeError('Input number should be int type')
+        return raise_err(err, errors)
     
     c = ['red', 'green', 'yellow', 'blue'] if color==None else color
     
