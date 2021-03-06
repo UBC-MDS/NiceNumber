@@ -44,6 +44,14 @@ This function changes the formatting of text in one or more columns of data in a
 - `to_color`
 This function separate numeric values to parts starting from the right and each part contains three digits. Then it gives different colors to each part and the default colors are red, green, yellow, and blue. Users need to use a specific number as input and choose a list of colors they want to assign on the number as an optional. The function will return a string that can be used in `print()` function to visual numbers with colors.
 
+```python
+import nicenumber as nn
+
+nn.to_color(1234567, ['green', 'red', 'blue'])
+
+>>> <span style="color: green;">1</span><span style="color: red;">234</span><span style="color: blue;">567</span>
+```
+
 ## Python Ecosystem
 
 There are several python packages that have similar functionalities with this package in the Python ecosystem. For example:
