@@ -1,4 +1,5 @@
 import pandas as pd
+import numpy as np
 import pytest as pt
 from nicenumber import __version__
 from nicenumber import nicenumber as nn
@@ -88,7 +89,28 @@ def test_to_numeric():
         (dict(string='4.51mb', family='filesize'), 4510000.0),
         (dict(string='6942klkl', errors='coerce'), pd.NA)]
 
+def test_to_pandas():
+    """Test to_pandas function"""
+    f = nn.to_pandas
+    test_df = pd.DataFrame(np.array([['1_000', '1_000_000'], ['1_000_000_000', '1_000_000_000_000']]), columns=['A', 'B'])
+    
+    # test 'df' TypeError raised with wrong type
+    raises(TypeError, f, df=[1,2,3]).match('pd.DataFrame')
 
+    # test 'col_names' TypeError raised wth wrong input type
+    raises(TypeError, f, df=test_df, col_names=1).match('str or list')
+
+    # test 'col_names' ValueError raised wth wrong input values
+    raises(ValueError, f, df=test_df, col_names=['X']).match('not present')
+
+    # test 'transform_type' ValueError raised wth wrong input values
+    raises(ValueError, f, df=test_df, transform_type='wrong').match('invalid')
+
+    # test shape of dataframes is equal
+    assert nn.to_pandas(test_df).shape == test_df.shape 
+
+    # test convert to human, convert to numeric, see if equal
+    assert test_df.equals(nn.to_pandas(nn.to_pandas(test_df), transform_type='num')) 
 
 def test_to_color():
     """ Test to_color() function"""
