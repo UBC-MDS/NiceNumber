@@ -48,10 +48,8 @@ This function separate numeric values to parts starting from the right and each 
 import nicenumber as nn
 
 nn.to_color(1234567, ['green', 'red', 'blue'])
-
->>> <span style="color: green;">1</span><span style="color: red;">234</span><span style="color: blue;">567</span>
 ```
-
+<span style="color: green;">1</span><span style="color: red;">234</span><span style="color: blue;">567</span>
 ## Python Ecosystem
 
 There are several python packages that have similar functionalities with this package in the Python ecosystem. For example:
