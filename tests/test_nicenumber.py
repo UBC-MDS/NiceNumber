@@ -69,7 +69,10 @@ def test_to_pandas():
     raises(ValueError, f, df=test_df, transform_type='wrong').match('invalid')
 
     # test shape of dataframes is equal
-    assert nn.to_pandas(test_df).shape == test_df.shape    
+    assert nn.to_pandas(test_df).shape == test_df.shape 
+
+    # test convert to human, convert to numeric, see if equal
+    assert test_df.equals(nn.to_pandas(nn.to_pandas(test_df), transform_type='num')) 
 
 def test_to_color():
     """ Test to_color() function"""
