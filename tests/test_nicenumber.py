@@ -92,7 +92,7 @@ def test_to_numeric():
 def test_to_pandas():
     """Test to_pandas function"""
     f = nn.to_pandas
-    test_df = pd.DataFrame(np.array([['1_000', '1_000_000'], ['1_000_000_000', '1_000_000_000_000']]), columns=['A', 'B'])
+    test_df = pd.DataFrame(np.array([[1_000, 1_000_000], [1_000_000_000, 1_000_000_000_000]]), columns=['A', 'B'])
     
     # test 'df' TypeError raised with wrong type
     raises(TypeError, f, df=[1,2,3]).match('pd.DataFrame')
