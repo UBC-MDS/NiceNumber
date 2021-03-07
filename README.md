@@ -39,7 +39,20 @@ nn.to_numeric(string=string, family='number')
 ```
 
 - `to_pandas`
-This function changes the formatting of text in one or more columns of data in a dataframe. The inputs should include a pandas data frame, column name(s), and two optionals: transform type(eg. human) and type of prefixes. The function will return a dataframe with the values from the input columns transferred to the transform type(human-readable by default).
+This function changes the formatting of text in one or more columns of data in a dataframe. The inputs should include a pandas data frame, column name(s), and two optionals: transform type(eg. human) and type of prefixes. The function will return a dataframe with the values from the input columns transferred to the transform type (human-readable by default).
+
+```python
+import nicenumber as nn
+
+df = pd.DataFrame(np.array([[1_000, 1_000_000], [1_000_000_000, 1_000_000_000_000]]), columns=['A', 'B'])
+
+nn.to_pandas(df, columns=['A'], transform_type='human')
+
+>>> |        |      A      |       B       |
+    |:------:|:-----------:|:-------------:|
+    |   0    |     1K      |    1000000    |
+    |   1    |     1B      | 1000000000000 |
+```
 
 - `to_color`
 This function separate numeric values to parts starting from the right and each part contains three digits. Then it gives different colors to each part and the default colors are red, green, yellow, and blue. Users need to use a specific number as input and choose a list of colors they want to assign on the number as an optional. The function will return a string that can be used in `print()` function to visual numbers with colors.
