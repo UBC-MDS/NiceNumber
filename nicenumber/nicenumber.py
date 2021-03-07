@@ -302,7 +302,7 @@ def to_color(
     number : int
         Integer number to be colored
     color : list, optional
-        List of colors, by default includes 'Red', 'Green', 'Yellow' and 'Blue'
+        List of colors, by default includes 'red', 'green', 'yellow' and 'blue'
     errors : str
         'raise', 'coerce', default 'raise'
         If 'raise', then invalid parsing will raise an exception.
@@ -315,7 +315,7 @@ def to_color(
 
     Examples
     ----------
-    >>> print(to_color(13637373737348738787, ['Yellow', 'Red']))
+    >>> print(to_color(13637373737348738787, ['yellow', 'red']))
     """
     palette = dict(
         black=30,
