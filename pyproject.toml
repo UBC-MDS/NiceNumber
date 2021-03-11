@@ -1,3 +1,6 @@
+[tool.autopep8]
+ignore = "E713"
+
 [tool.poetry]
 name = "nicenumber"
 version = "0.2.0"
@@ -22,6 +25,7 @@ flake8 = "^3.8.4"
 python-semantic-release = "^7.15.0"
 Sphinx = "^3.5.2"
 sphinxcontrib-napoleon = "^0.7"
+autopep8 = "^1.5.5"
 
 [tool.semantic_release]
 version_variable = "nicenumber/__init__.py:__version__"
