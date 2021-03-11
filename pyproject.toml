@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "nicenumber"
-version = "0.1.0"
+version = "0.2.0"
 description = "Python package to make numbers nice"
 authors = ["Cameron Harris <camharris22@gmail.com>"]
 license = "MIT"
