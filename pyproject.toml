@@ -2,7 +2,11 @@
 name = "nicenumber"
 version = "0.2.0"
 description = "Python package to make numbers nice"
-authors = ["Cameron Harris <camharris22@gmail.com>"]
+authors = [
+    "Cameron Harris <camharris22@gmail.com>",
+    "Guanshu Tao <>",
+    "Jayme Gordon <jaymegordo@gmail.com>",
+    "Zhiyong Wang <william.calix.cn@gmail.com>"]
 license = "MIT"
 
 [tool.poetry.dependencies]
@@ -12,6 +16,11 @@ pandas = "^1.2.3"
 [tool.poetry.dev-dependencies]
 pytest = "^6.2.2"
 bump2version = "^1.0.1"
+ipykernel = "^5.5.0"
+pytest-cov = "^2.11.1"
+codecov = "^2.1.11"
+flake8 = "^3.8.4"
+python-semantic-release = "^7.15.0"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
