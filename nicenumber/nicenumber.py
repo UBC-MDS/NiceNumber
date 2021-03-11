@@ -5,27 +5,27 @@ from typing import Union
 import numpy as np
 import pandas as pd
 
-#from .__init__ import getlog
-
-#log = getlog(__name__)
 
 # global suffix lists
 suffixs = dict(
     number=['K', 'M', 'B', 'T', 'Q'],
     filesize=['KB', 'MB', 'GB', 'TB', 'PB'])
 
+
 def raise_err(err, errors):
     """Internal helper func to raise err if 'raise' else pd.NA"""
-    if errors == 'coerce': 
+    if errors == 'coerce':
         return pd.NA
     else:
         raise err
+
 
 def is_numeric(val) -> bool:
     """Check if value is float/int"""
     return issubclass(np.dtype(type(val)).type, np.number)
 
-def check_family(family : str) -> bool:
+
+def check_family(family: str) -> bool:
     """Check if family in suffixes
 
     Parameters
@@ -42,15 +42,16 @@ def check_family(family : str) -> bool:
     ------
     ValueError
         If family doesn't exist in suffixes
-    """    
+    """
     if not family in suffixs:
         raise ValueError(
             f'Invalid family: "{family}". Valid options: {list(suffixs)}')
 
+
 def get_suffix(
-    family : str,
-    custom_suff : Union[list, None] = None,
-    lower : bool = False):
+        family: str,
+        custom_suff: Union[list, None] = None,
+        lower: bool = False) -> list:
     """Get suffix list
 
     Parameters
@@ -66,19 +67,20 @@ def get_suffix(
     -------
     list
         List of suffixes
-    """        
+    """
     suffix_list = [''] + (custom_suff or suffixs.get(family))
     return suffix_list if not lower else [s.lower() for s in suffix_list]
 
+
 def to_human(
-    n : float,
-    prec : int = 0,
-    family : str = 'number',
-    custom_suff : Union[list, None] = None,
-    currency : bool = False,
-    currency_sym : str = '$',
-    errors : str = 'raise',
-    **kw) -> str:
+        n: float,
+        prec: int = 0,
+        family: str = 'number',
+        custom_suff: Union[list, None] = None,
+        currency: bool = False,
+        currency_sym: str = '$',
+        errors: str = 'raise',
+        **kw) -> str:
     """Convert numeric value to human readable string representation
 
     Parameters
@@ -115,7 +117,8 @@ def to_human(
 
     # assert correct dtype
     if not is_numeric(n):
-        err = TypeError(f'Value must be numeric, not "{type(n)}". Invalid value: "{n}"')
+        err = TypeError(
+            f'Value must be numeric, not "{type(n)}". Invalid value: "{n}"')
         return raise_err(err, errors)
 
     # assert family in suffixs
@@ -134,10 +137,10 @@ def to_human(
 
     if idx > max_len:
         err = ValueError(
-            'Number too large for conversion. Maximum order: 100e{e} ({suff})' \
-                .format(
-                    e=max_len * base,
-                    suff=suffix_list[-1]))
+            'Number too large for conversion. Maximum order: 100e{e} ({suff})'
+            .format(
+                e=max_len * base,
+                suff=suffix_list[-1]))
 
         return raise_err(err, errors)
 
@@ -150,12 +153,13 @@ def to_human(
         prec=prec,
         suffix=suffix_list[idx])
 
+
 def to_numeric(
-    string : str,
-    family : str = 'number',
-    custom_suff : Union[list, None] = None,
-    errors : str = 'raise',
-    **kw):
+        string: str,
+        family: str = 'number',
+        custom_suff: Union[list, None] = None,
+        errors: str = 'raise',
+        **kw) -> float:
     """Convert human readable string representation to numeric value
 
     Parameters
@@ -170,25 +174,25 @@ def to_numeric(
         'raise', 'coerce', default 'raise'
         If 'raise', then invalid parsing will raise an exception.
         If 'coerce', then invalid parsing will return pd.NA.
-        
+
     Returns
     -------
     float
-    
+
     Examples
     --------
     >>> to_numeric('1.5M')
     1500000
     """
 
-    # check if string can be converted to a number    
+    # check if string can be converted to a number
     def is_float(value):
         try:
             float(value)
             return True
         except ValueError:
             return False
-        
+
     # test whether input string can be convert to number
     if is_float(string):
         return float(string)
@@ -196,7 +200,7 @@ def to_numeric(
     # get rid of symbols before digit
     string = re.sub(r'^[\D]+', '', string)
 
-    # assert type of string 
+    # assert type of string
     if not isinstance(string, str):
         err = TypeError(
             f'Input value must be a string or number, not "{type(string)}". Invalid value: "{string}"')
@@ -205,16 +209,16 @@ def to_numeric(
 
     # assert family in suffixs
     check_family(family=family)
-    
+
     # get suffix list as all lower
     suffix_list = get_suffix(family, custom_suff, lower=True)
 
     # extract suffix as all alphanumeric characters at end of string
     suff = re.search(r'[a-zA-Z]*$', string, flags=re.IGNORECASE)[0].lower()
-    
+
     base = 10 ** 3
 
-    if not suff in suffix_list: 
+    if not suff in suffix_list:
         err = ValueError(
             f'Invalid string suffix: "{suff}". Valid options: {suffix_list}')
         return raise_err(err, errors)
@@ -226,12 +230,13 @@ def to_numeric(
     number = re.search(r'\d+\.*\d*', string)[0]
     return float(number) * (base ** power)
 
+
 def to_pandas(
-    df : pd.DataFrame,
-    col_names : Union[str, list] = None,
-    transform_type : str ='human',
-    family : str ='number',
-    **kw):
+        df: pd.DataFrame,
+        col_names: Union[str, list] = None,
+        transform_type: str = 'human',
+        family: str = 'number',
+        **kw) -> pd.DataFrame:
     """Change the formatting of data in column(s) of a dataframe to either human readable or numeric
 
     Parameters
@@ -255,16 +260,16 @@ def to_pandas(
     Examples
     ----------
     >>> to_pandas(df, col_names=['A', 'B', 'C'], transform_type='human')
-    """     
-
-    # TODO -> Add additional arguments option such as precision, etc. if time 
-    if col_names is None:
-        col_names = df.columns.tolist()
+    """
 
     if not type(df) == pd.DataFrame:
         raise TypeError(
             'Input must be of type pd.DataFrame')
-    
+
+    # TODO -> Add additional arguments option such as precision, etc. if time
+    if col_names is None:
+        col_names = df.columns.tolist()
+
     if not isinstance(col_names, (str, list)):
         raise TypeError(
             'col_names must be of type str or list')
@@ -278,23 +283,25 @@ def to_pandas(
         human=to_human,
         num=to_numeric,
         color=to_color)
-        
+
     func = m_funcs.get(transform_type, None)
-    
+
     if func is None:
         raise ValueError(
             f'Invalid transform_type. Valid options: {list(m_funcs.keys())}')
-    
+
     # create dict of eg {column_name: to_human(**kw)} for each col to convert
-    assign_cols = {col: lambda df: df[col].apply(func, **kw) for col in col_names}
+    assign_cols = {col: lambda df: df[col].apply(
+        func, **kw) for col in col_names}
 
     return df.assign(**assign_cols)
 
+
 def to_color(
-    number : int,
-    color : list = None,
-    errors : str = 'raise',
-    **kw):
+        number: int,
+        color: list = None,
+        errors: str = 'raise',
+        **kw) -> str:
     """Give all parts of the number with different colors
 
     Parameters
@@ -327,7 +334,7 @@ def to_color(
         white=37,
         underline=4,
         reset=0)
-    
+
     # create full color codes as a dict comp
     palette = {k: f'\033[{color_code}m' for k, color_code in palette.items()}
 
@@ -335,22 +342,22 @@ def to_color(
     if not is_numeric(number):
         err = TypeError('Input number should be int type')
         return raise_err(err, errors)
-    
-    c = ['red', 'green', 'yellow', 'blue'] if color==None else color
-    
+
+    c = ['red', 'green', 'yellow', 'blue'] if color is None else color
+
     d = str(number)
-    offset = len(d)%3
+    offset = len(d) % 3
     if offset != 0:
-        s = [d[0:offset]]+[d[i:i+3] for i in range(offset, len(d), 3)]
+        s = [d[0:offset]] + [d[i:i + 3] for i in range(offset, len(d), 3)]
     else:
-        s = [d[i:i+3] for i in range(offset, len(d), 3)]
+        s = [d[i:i + 3] for i in range(offset, len(d), 3)]
 
     ans = ''
 
     for i, num in enumerate(s):
-        fill = palette[c[i%len(c)]]
+        fill = palette[c[i % len(c)]]
         ans += fill
         ans += num
         ans += palette['reset']
-    
+
     return ans

@@ -26,8 +26,8 @@ sys.path.insert(0, os.path.abspath('..'))
 # -- Project information -----------------------------------------------------
 
 project = u'NiceNumber'
-copyright = u"2021, Cameron Harris"
-author = u"Cameron Harris"
+copyright = u"2021, UBC-MDS"
+author = u"UBC-MDS"
 
 # -- General configuration ---------------------------------------------
 
@@ -128,7 +128,7 @@ latex_elements = {
 latex_documents = [
     (master_doc, 'nicenumber.tex',
      u'NiceNumber Documentation',
-     u'Cameron Harris', 'manual'),
+     u'UBC-MDS', 'manual'),
 ]
 
 

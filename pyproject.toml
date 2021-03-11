@@ -1,9 +1,20 @@
+[tool.autopep8]
+ignore = "E713"
+
 [tool.poetry]
 name = "nicenumber"
 version = "0.2.0"
 description = "Python package to make numbers nice"
-authors = ["Cameron Harris <camharris22@gmail.com>"]
+authors = [
+    "Cameron Harris <camharris22@gmail.com>",
+    "Guanshu Tao <>",
+    "Jayme Gordon <jaymegordo@gmail.com>",
+    "Zhiyong Wang <william.calix.cn@gmail.com>"]
 license = "MIT"
+readme = "README.md"
+homepage = "https://github.com/UBC-MDS/NiceNumber"
+repository = "https://github.com/UBC-MDS/NiceNumber"
+documentation = 'https://NiceNumber.readthedocs.io'
 
 [tool.poetry.dependencies]
 python = "^3.8"
@@ -11,7 +22,20 @@ pandas = "^1.2.3"
 
 [tool.poetry.dev-dependencies]
 pytest = "^6.2.2"
-bump2version = "^1.0.1"
+ipykernel = "^5.5.0"
+pytest-cov = "^2.11.1"
+codecov = "^2.1.11"
+flake8 = "^3.8.4"
+python-semantic-release = "^7.15.0"
+Sphinx = "^3.5.2"
+sphinxcontrib-napoleon = "^0.7"
+autopep8 = "^1.5.5"
+
+[tool.semantic_release]
+version_variable = "nicenumber/__init__.py:__version__"
+version_source = "commit"
+upload_to_pypi = "false"
+patch_without_tag = "true"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]

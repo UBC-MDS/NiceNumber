@@ -3,7 +3,7 @@ __version__ = '0.2.0'
 import logging
 
 
-def getlog(name : str):
+def getlog(name: str):
     """Create logger object with predefined stream handler & formatting
 
     Parameters
@@ -14,12 +14,12 @@ def getlog(name : str):
     Returns
     -------
     logging.logger
-    
+
     Examples
     --------
     >>> from .__init__ import getlog
     >>> log = getlog(__name__)
-    """    
+    """
     fmt_stream = logging.Formatter('%(levelname)-7s %(lineno)-4d %(name)-26s %(message)s')
     sh = logging.StreamHandler()
     sh.setLevel(logging.INFO)
