@@ -65,7 +65,7 @@ jobs:
     - name: Push package version changes
       uses: ad-m/github-push-action@master
       with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
+        github_token: ${{ secrets.ACCESS_TOKEN }}
         
     - name: Enable "include administrators" branch protection
       uses: benjefferies/branch-protection-bot@master
@@ -91,7 +91,7 @@ jobs:
         release_name: ${{ steps.release.outputs.release_tag }}
         draft: false
         prerelease: false
-        
+
     - name: Build package and publish to test PyPI
       env:
         TEST_PYPI_USERNAME: ${{ secrets.TEST_PYPI_USERNAME }}
