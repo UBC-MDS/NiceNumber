@@ -11,6 +11,10 @@ authors = [
     "Jayme Gordon <jaymegordo@gmail.com>",
     "Zhiyong Wang <william.calix.cn@gmail.com>"]
 license = "MIT"
+readme = "README.md"
+homepage = "https://github.com/UBC-MDS/NiceNumber"
+repository = "https://github.com/UBC-MDS/NiceNumber"
+documentation = 'https://NiceNumber.readthedocs.io'
 
 [tool.poetry.dependencies]
 python = "^3.8"
