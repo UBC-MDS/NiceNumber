@@ -1,13 +1,10 @@
-import pandas as pd
 import numpy as np
+import pandas as pd
 import pytest as pt
 from nicenumber import __version__
 from nicenumber import nicenumber as nn
 from pytest import raises
 
-
-def test_version():
-    assert __version__ == '0.2.0'
 
 def check_expected_result(func, vals : list):
     """Call function with kw args for each dict in list
