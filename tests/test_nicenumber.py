@@ -1,7 +1,23 @@
+import subprocess
+
 import numpy as np
 import pandas as pd
+from nicenumber import __version__, getlog
 from nicenumber import nicenumber as nn
 from pytest import raises
+
+
+def test_init():
+    """Test main package __init__.py"""
+
+    # test getlog function works to create logger
+    log = getlog(__name__)
+    assert log.name == __name__
+
+    # test version strings match
+    args = ['poetry', 'version', '-s']
+    toml_ver = subprocess.run(args, capture_output=True, text=True).stdout.rstrip()
+    assert __version__ == toml_ver
 
 
 def check_expected_result(func, vals: list):
