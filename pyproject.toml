@@ -22,6 +22,12 @@ codecov = "^2.1.11"
 flake8 = "^3.8.4"
 python-semantic-release = "^7.15.0"
 
+[tool.semantic_release]
+version_variable = "nicenumber/__init__.py:__version__"
+version_source = "commit"
+upload_to_pypi = "false"
+patch_without_tag = "true"
+
 [build-system]
 requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
