@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "nicenumber"
-version = "0.1.0"
+version = "0.2.0"
 description = "Python package to make numbers nice"
 authors = ["Cameron Harris <camharris22@gmail.com>"]
 license = "MIT"
@@ -11,6 +11,7 @@ pandas = "^1.2.3"
 
 [tool.poetry.dev-dependencies]
 pytest = "^6.2.2"
+bump2version = "^1.0.1"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
