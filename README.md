@@ -1,6 +1,6 @@
 # NiceNumber 
 
-![](https://github.com/camharris22/nicenumber/workflows/build/badge.svg) [![codecov](https://codecov.io/gh/camharris22/nicenumber/branch/main/graph/badge.svg)](https://codecov.io/gh/camharris22/nicenumber) ![Release](https://github.com/camharris22/nicenumber/workflows/Release/badge.svg) [![Documentation Status](https://readthedocs.org/projects/nicenumber/badge/?version=latest)](https://nicenumber.readthedocs.io/en/latest/?badge=latest)
+![](https://github.com/UBC-MDS/nicenumber/workflows/build/badge.svg) [![codecov](https://codecov.io/gh/UBC-MDS/nicenumber/branch/main/graph/badge.svg)](https://codecov.io/gh/UBC-MDS/nicenumber) ![Release](https://github.com/UBC-MDS/nicenumber/workflows/Release/badge.svg) [![Documentation Status](https://readthedocs.org/projects/nicenumber/badge/?version=latest)](https://nicenumber.readthedocs.io/en/latest/?badge=latest)
 
 This Python package provides basic functions that make numbers display nicely. In most real-world problems, the datasets are raw and we need to deal with number formats to make them readable for humans or for computers. Usually, a few or more lines of coding are needed while dealing with number-display problems so we are thinking of compressing the time and programming work on this issue. This package solves this kind of problems in a way of transfer forward and backward from long digit numbers to human-readable ones. There are functions doing single number transactions, column transactions from a pandas data frame, and displaying colors of input numbers.  
 
