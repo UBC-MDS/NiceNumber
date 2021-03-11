@@ -15,18 +15,23 @@ jobs:
         python-version: [3.8]
     steps:
     - uses: actions/checkout@v2
+
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v1
       with:
         python-version: ${{ matrix.python-version }}
+
     - name: Install dependencies
       run: |
         pip install poetry
         poetry install
+
     - name: Check style
       run: poetry run flake8
+
     - name: Test with pytest
       run: poetry run pytest --cov=./ --cov-report=xml
+
     - name: Upload coverage to Codecov  
       uses: codecov/codecov-action@v1
       with:
@@ -35,15 +40,19 @@ jobs:
         flags: unittests
         name: codecov-umbrella
         fail_ci_if_error: true
+
     - name: checkout
       uses: actions/checkout@master
       with:
         ref: main
+        
     - name: Temporarily disable "include administrators" branch protection
       uses: benjefferies/branch-protection-bot@master
       if: always()
       with:
           access-token: ${{ secrets.ACCESS_TOKEN }}
+          branch: main
+          
     - name: Bump version and tagging and publish
       run: |
         git config --local user.email "action@github.com"
@@ -52,21 +61,26 @@ jobs:
         poetry run semantic-release version
         poetry version $(grep "version" */__init__.py | cut -d "'" -f 2 | cut -d '"' -f 2)
         git commit -m "Bump versions" -a
+        
     - name: Push package version changes
       uses: ad-m/github-push-action@master
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
+        
     - name: Enable "include administrators" branch protection
       uses: benjefferies/branch-protection-bot@master
       if: always()  # Force to always run this step to ensure "include administrators" is always turned back on
       with:
         access-token: ${{ secrets.ACCESS_TOKEN }}
-        owner: jaymgordo
-        repo: NiceNumber
+        branch: main
+        # owner: UBC-MDS
+        # repo: NiceNumber
+        
     - name: Get release tag version from package version
       run: |
         echo ::set-output name=release_tag::$(grep "version" */__init__.py | cut -d "'" -f 2 | cut -d '"' -f 2)
       id: release
+      
     - name: Create Release with new version
       id: create_release
       uses: actions/create-release@v1
@@ -77,6 +91,7 @@ jobs:
         release_name: ${{ steps.release.outputs.release_tag }}
         draft: false
         prerelease: false
+        
     - name: Build package and publish to test PyPI
       env:
         TEST_PYPI_USERNAME: ${{ secrets.TEST_PYPI_USERNAME }}
