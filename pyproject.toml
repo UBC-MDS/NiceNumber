@@ -3,7 +3,7 @@ ignore = "E713"
 
 [tool.poetry]
 name = "nicenumber"
-version = "0.2.16"
+version = "0.2.17"
 description = "Python package to make numbers nice"
 authors = [
     "Cameron Harris <camharris22@gmail.com>",
