@@ -189,6 +189,13 @@ def to_numeric(
     if is_numeric(string):
         return float(string)
 
+    # assert type of string
+    if not isinstance(string, str):
+        err = TypeError(
+            f'Input value must be a string or number, not "{type(string)}". Invalid value: "{string}"')
+
+        return raise_err(err, errors)
+
     # get rid of symbols before digit
     string = re.sub(r'^[\D]+', '', string)
 
