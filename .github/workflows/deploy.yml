@@ -59,7 +59,7 @@ jobs:
         git config --local user.name "GitHub Action"
         git pull origin main
         poetry run semantic-release version
-        NEW_VER=v$(grep "version" */__init__.py | cut -d "'" -f 2 | cut -d '"' -f 2)
+        poetry version $(grep "version" */__init__.py | cut -d "'" -f 2 | cut -d '"' -f 2)
         git commit -m "[skip actions] Bump versions" -a
         
     - name: Push package version changes
