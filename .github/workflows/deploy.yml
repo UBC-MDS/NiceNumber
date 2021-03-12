@@ -59,7 +59,8 @@ jobs:
         git config --local user.name "GitHub Action"
         git pull origin main
         poetry run semantic-release version
-        poetry version $(grep "version" */__init__.py | cut -d "'" -f 2 | cut -d '"' -f 2)
+        NEW_VER=v$(grep "version" */__init__.py | cut -d "'" -f 2 | cut -d '"' -f 2)
+        git tag -d $NEW_VER
         git commit -m "[skip actions] Bump versions" -a
         
     - name: Push package version changes
@@ -77,7 +78,7 @@ jobs:
         
     - name: Get release tag version from package version
       run: |
-        echo ::set-output name=release_tag::$(grep "version" */__init__.py | cut -d "'" -f 2 | cut -d '"' -f 2)
+        echo ::set-output name=release_tag::v$(grep "version" */__init__.py | cut -d "'" -f 2 | cut -d '"' -f 2)
       id: release
       
     - name: Create Release with new version
