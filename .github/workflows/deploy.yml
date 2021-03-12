@@ -45,13 +45,13 @@ jobs:
         ref: main
         token : ${{ secrets.ACCESS_TOKEN }}
         
-    - name: Disable admin branch protection
-      uses: benjefferies/branch-protection-bot@master
-      if: always()
-      with:
-          access-token: ${{ secrets.ACCESS_TOKEN }}
-          branch: main
-          enforce_admins: false
+    # - name: Disable admin branch protection
+    #   uses: benjefferies/branch-protection-bot@master
+    #   if: always()
+    #   with:
+    #       access-token: ${{ secrets.ACCESS_TOKEN }}
+    #       branch: main
+    #       enforce_admins: false
           
     - name: Bump version and tagging and publish
       run: |
@@ -60,20 +60,20 @@ jobs:
         git pull origin main
         poetry run semantic-release version
         poetry version $(grep "version" */__init__.py | cut -d "'" -f 2 | cut -d '"' -f 2)
-        git commit -m "Bump versions" -a
+        git commit -m "[skip actions] Bump versions" -a
         
     - name: Push package version changes
       uses: ad-m/github-push-action@master
       with:
         github_token: ${{ secrets.ACCESS_TOKEN }}
         
-    - name: Enable admin branch protection
-      uses: benjefferies/branch-protection-bot@master
-      if: always()  # Force to always run this step to ensure "include administrators" is always turned back on
-      with:
-        access-token: ${{ secrets.ACCESS_TOKEN }}
-        branch: main
-        enforce_admins: false
+    # - name: Enable admin branch protection
+    #   uses: benjefferies/branch-protection-bot@master
+    #   if: always()  # Force to always run this step to ensure "include administrators" is always turned back on
+    #   with:
+    #     access-token: ${{ secrets.ACCESS_TOKEN }}
+    #     branch: main
+    #     enforce_admins: false
         
     - name: Get release tag version from package version
       run: |
