@@ -60,7 +60,6 @@ jobs:
         git pull origin main
         poetry run semantic-release version
         NEW_VER=v$(grep "version" */__init__.py | cut -d "'" -f 2 | cut -d '"' -f 2)
-        git tag -d $NEW_VER
         git commit -m "[skip actions] Bump versions" -a
         
     - name: Push package version changes
