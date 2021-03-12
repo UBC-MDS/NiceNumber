@@ -43,13 +43,13 @@ jobs:
         ref: main
         token : ${{ secrets.ACCESS_TOKEN }}
         
-    # - name: Disable admin branch protection
-    #   uses: benjefferies/branch-protection-bot@master
-    #   if: always()
-    #   with:
-    #       access-token: ${{ secrets.ACCESS_TOKEN }}
-    #       branch: main
-    #       enforce_admins: false
+    - name: Disable admin branch protection
+      uses: benjefferies/branch-protection-bot@master
+      if: always()
+      with:
+          access-token: ${{ secrets.ACCESS_TOKEN }}
+          branch: main
+          enforce_admins: false
           
     - name: Bump version and tagging and publish
       run: |
@@ -65,13 +65,13 @@ jobs:
       with:
         github_token: ${{ secrets.ACCESS_TOKEN }}
         
-    # - name: Enable admin branch protection
-    #   uses: benjefferies/branch-protection-bot@master
-    #   if: always()  # Force to always run this step to ensure "include administrators" is always turned back on
-    #   with:
-    #     access-token: ${{ secrets.ACCESS_TOKEN }}
-    #     branch: main
-    #     enforce_admins: false
+    - name: Enable admin branch protection
+      uses: benjefferies/branch-protection-bot@master
+      if: always()  # Force to always run this step to ensure "include administrators" is always turned back on
+      with:
+        access-token: ${{ secrets.ACCESS_TOKEN }}
+        branch: main
+        enforce_admins: true
         
     - name: Get release tag version from package version
       run: |
