@@ -5,21 +5,19 @@ on:
   push:
     branches:
       - main
+    tags-ignore:
+      - '*.*'
 
 jobs:
   build:
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [ubuntu-latest]
-        python-version: [3.8]
+    runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
 
-    - name: Set up Python ${{ matrix.python-version }}
+    - name: Set up Python 3.8
       uses: actions/setup-python@v1
       with:
-        python-version: ${{ matrix.python-version }}
+        python-version: 3.8
 
     - name: Install dependencies
       run: |
@@ -47,12 +45,13 @@ jobs:
         ref: main
         token : ${{ secrets.ACCESS_TOKEN }}
         
-    # - name: Temporarily disable "include administrators" branch protection
-    #   uses: benjefferies/branch-protection-bot@master
-    #   if: always()
-    #   with:
-    #       access-token: ${{ secrets.ACCESS_TOKEN }}
-    #       branch: main
+    - name: Disable admin branch protection
+      uses: benjefferies/branch-protection-bot@master
+      if: always()
+      with:
+          access-token: ${{ secrets.ACCESS_TOKEN }}
+          branch: main
+          enforce_admins: false
           
     - name: Bump version and tagging and publish
       run: |
@@ -68,12 +67,13 @@ jobs:
       with:
         github_token: ${{ secrets.ACCESS_TOKEN }}
         
-    # - name: Enable "include administrators" branch protection
-    #   uses: benjefferies/branch-protection-bot@master
-    #   if: always()  # Force to always run this step to ensure "include administrators" is always turned back on
-    #   with:
-    #     access-token: ${{ secrets.ACCESS_TOKEN }}
-    #     branch: main
+    - name: Enable admin branch protection
+      uses: benjefferies/branch-protection-bot@master
+      if: always()  # Force to always run this step to ensure "include administrators" is always turned back on
+      with:
+        access-token: ${{ secrets.ACCESS_TOKEN }}
+        branch: main
+        enforce_admins: false
         
     - name: Get release tag version from package version
       run: |
@@ -91,11 +91,11 @@ jobs:
         draft: false
         prerelease: false
 
-    - name: Build package and publish to test PyPI
-      env:
-        TEST_PYPI_USERNAME: ${{ secrets.TEST_PYPI_USERNAME }}
-        TEST_PYPI_PASSWORD: ${{ secrets.TEST_PYPI_PASSWORD }}
-      run: |
-        poetry config repositories.test-pypi https://test.pypi.org/legacy/
-        poetry build
-        poetry publish -r test-pypi -u $TEST_PYPI_USERNAME -p $TEST_PYPI_PASSWORD
+    # - name: Build package and publish to test PyPI
+    #   env:
+    #     TEST_PYPI_USERNAME: ${{ secrets.TEST_PYPI_USERNAME }}
+    #     TEST_PYPI_PASSWORD: ${{ secrets.TEST_PYPI_PASSWORD }}
+    #   run: |
+    #     poetry config repositories.test-pypi https://test.pypi.org/legacy/
+    #     poetry build
+    #     poetry publish -r test-pypi -u $TEST_PYPI_USERNAME -p $TEST_PYPI_PASSWORD
