@@ -185,27 +185,12 @@ def to_numeric(
     1500000
     """
 
-    # check if string can be converted to a number
-    def is_float(value):
-        try:
-            float(value)
-            return True
-        except ValueError:
-            return False
-
-    # test whether input string can be convert to number
-    if is_float(string):
+    # if input is number, just return
+    if is_numeric(string):
         return float(string)
 
     # get rid of symbols before digit
     string = re.sub(r'^[\D]+', '', string)
-
-    # assert type of string
-    if not isinstance(string, str):
-        err = TypeError(
-            f'Input value must be a string or number, not "{type(string)}". Invalid value: "{string}"')
-
-        return raise_err(err, errors)
 
     # assert family in suffixs
     check_family(family=family)

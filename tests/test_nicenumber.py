@@ -100,6 +100,7 @@ def test_to_numeric():
         (dict(string='4.51m'), 4510000.0),
         (dict(string='69.420B'), 69420000000),
         (dict(string='4.51mb', family='filesize'), 4510000.0),
+        (dict(string=5, family='filesize'), 5.0),
         (dict(string='6942klkl', errors='coerce'), pd.NA)]
 
     check_expected_result(func=f, vals=vals)
