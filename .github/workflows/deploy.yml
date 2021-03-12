@@ -73,7 +73,7 @@ jobs:
       with:
         access-token: ${{ secrets.ACCESS_TOKEN }}
         branch: main
-        enforce_admins: true
+        enforce_admins: false
         
     - name: Get release tag version from package version
       run: |
