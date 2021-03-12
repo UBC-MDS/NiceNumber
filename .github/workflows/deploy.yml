@@ -15,9 +15,6 @@ jobs:
         python-version: [3.8]
     steps:
     - uses: actions/checkout@v2
-      with:
-        persist-credentials: false
-        fetch-depth: 0
 
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v1
@@ -45,9 +42,10 @@ jobs:
         fail_ci_if_error: true
 
     - name: checkout
-      uses: actions/checkout@master
+      uses: actions/checkout@v2
       with:
         ref: main
+        token : ${{ secrets.ACCESS_TOKEN }}
         
     # - name: Temporarily disable "include administrators" branch protection
     #   uses: benjefferies/branch-protection-bot@master
