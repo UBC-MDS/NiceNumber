@@ -7,7 +7,7 @@ This Python package provides basic functions that make numbers display nicely. I
 ## Installation
 
 ```bash
-$ pip install -i https://test.pypi.org/simple/ nicenumber
+$ pip install -i https://test.pypi.org/simple/nicenumber
 ```
 
 ## Features
@@ -74,15 +74,6 @@ There are several python packages that have similar functionalities with this pa
 - [`humanfriendly`](https://humanfriendly.readthedocs.io/en/latest/#) formats numbers text interfaces more user friendly from different aspects such as transferring between units.
  
 We aim to optimize those existing packages so that the users can use one package instead of using several packages at the same time.
-
-
-## Dependencies
-
-- TODO
-
-## Usage
-
-- TODO
 
 ## Documentation
 
